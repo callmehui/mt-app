@@ -13,6 +13,19 @@ const portfinder = require('portfinder')
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
+// mock数据
+
+// 导入express框架
+const express = require("express")
+
+// 创建express实例
+const app = express()
+
+// 引入数据
+var goods = require("../data/goods.json")
+var ratings = require("../data/ratings.json")
+var seller = require("../data/seller.json")
+
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
@@ -42,6 +55,19 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
+    },
+    before(app){
+      app.get('/api/goods',(req,res) => {
+        res.json(goods)
+      } )
+
+      app.get('/api/ratings',(req,res) => {
+        res.json(ratings)
+      } )
+
+      app.get('/api/seller',(req,res) => {
+        res.json(seller)
+      } )
     }
   },
   plugins: [
